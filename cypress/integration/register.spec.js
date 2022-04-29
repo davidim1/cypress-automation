@@ -1,7 +1,25 @@
 /// <reference types="Cypress" />
+import { faker } from '@faker-js/faker';
+
+
 
 describe('test register', () => {
-    it ('register with empty first-name', () => {
+    let registerData = {
+        firstName: '',
+        lastName: '',
+        randomEmail: '',
+        password: '',
+    }
+
+    beforeEach(() => {
+        registerData.firstName = faker.name.firstName();
+        registerData.lastName = faker.name.lastName();
+        registerData.randomEmail = faker.internet.email();
+        registerData.password = faker.internet.password ();
+    })
+    
+
+    xit ('register with empty first-name', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('');
@@ -13,7 +31,7 @@ describe('test register', () => {
         cy.get('button[type="submit"]').click();
     })
 
-    it ('register with empty last-name', () => {
+    xit ('register with empty last-name', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
@@ -25,7 +43,7 @@ describe('test register', () => {
         cy.get('button[type="submit"]').click();
     })
 
-    it ('register with invalid email', () => {
+    xit ('register with invalid email', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
@@ -37,7 +55,7 @@ describe('test register', () => {
         cy.get('button[type="submit"]').click();
     })
 
-    it ('register with invalid password', () => {
+    xit ('register with invalid password', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
@@ -49,7 +67,7 @@ describe('test register', () => {
         cy.get('button[type="submit"]').click();
     })
 
-    it ('register with invalid confirmation-password', () => {
+    xit ('register with invalid confirmation-password', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
@@ -61,7 +79,7 @@ describe('test register', () => {
         cy.get('button[type="submit"]').click();
     })
 
-    it ('register without accepting terms', () => {
+    xit ('register without accepting terms', () => {
         cy.visit('/register');
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
@@ -77,7 +95,7 @@ describe('test register', () => {
         cy.url().should('include', '/register');
         cy.get('#first-name').type('John');
         cy.get('#last-name').type('Motika');
-        cy.get('#email').type('johnmotika@gmail.com');
+        cy.get('#email').type(randomEmail);
         cy.get('#password').type('john1234');
         cy.get('#password-confirmation').type('john1234');
         cy.get('.form-check-input').check();
