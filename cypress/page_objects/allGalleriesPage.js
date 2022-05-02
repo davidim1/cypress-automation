@@ -11,10 +11,17 @@ class AllGalleriesPage {
         return cy.get('button[class="btn btn-custom"]')
     }
 
+    get clickGalleryUrl() {
+        return cy.get('a[class="box-title"]').eq(0)
+    }
+
+
     allgalleries(search){
+        this.clickGalleryUrl.click();
+        cy.visit('/');
+        this.loadMoreBtn.click();
         this.searchBox.type(search);
         this.filterBtn.click();
-        this.loadMoreBtn.click();
     }
 }
 
