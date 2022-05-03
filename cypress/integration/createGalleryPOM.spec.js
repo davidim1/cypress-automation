@@ -1,5 +1,7 @@
 import { createGalleryPage } from "../page_objects/createGalleryPage";
 import { faker } from '@faker-js/faker';
+import {loginPage} from '../page_objects/loginPage'
+
 
 describe ('Create gallery', () => {
     let createGalleryData= {
@@ -8,12 +10,12 @@ describe ('Create gallery', () => {
         images: ('https://picsum.photos/200/300.jpg')
     }
     
-    beforeEach('visit login page and login', () => {    
-        cy.visit('/login');
+    beforeEach('visit login page and login', () => {  
+        cy.visit('/login')
         cy.url().should('include', '/login')
-        cy.get('#email').type('gugagaga@gmail.com');
-        cy.get('#password').type('gugagaga1');
-        cy.get('button[type="submit"]').click();
+        loginPage.emailInput.type('gugagaga@gmail.com');
+        loginPage.passwordInput.type('gugagaga1');
+        loginPage.submitBtn.click();
         cy.get('a[href="/create"]').click();
     })
     

@@ -1,6 +1,6 @@
 class AllGalleriesPage {
     get searchBox() {
-        return cy.get('input[placeholder="Search..."]')
+        return cy.get('input')
     }
 
     get filterBtn() {
