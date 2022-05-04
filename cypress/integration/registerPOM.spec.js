@@ -13,9 +13,30 @@ describe('registration POM', () => {
         cy.visit('/register');
         cy.url().should('include', '/register')
     })
+
+    it ('register with invalid data', () => {
+        cy.visit('/register');
+        cy.url().should('contains', '/register');
+        registerPage.registerHeading.should('have.text', 'Register');
+        registerPage.register('Danilo', 'Motika', 'danilomotika@gmailcom', 'D12345678');
+        registerPage.errorMsg.should('be.visible')
+        .and('have.text', 'The email must be a valid email address.')
+        .and('have.css','border-color', 'rgb(245, 198, 203)');
+    })
     
 
-    it ('register with valid data', () => {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    xit ('register with valid data', () => {
     // cy.visit('/register');
     // registerPage.firtNameInput.type('David');
     // registerPage.lastNameInput.type('Mijatovic');

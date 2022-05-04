@@ -1,4 +1,8 @@
 class AllGalleriesPage {
+    get allGalleriesHeading(){
+        return cy.get('h1');
+    }
+
     get searchBox() {
         return cy.get('input')
     }
@@ -15,6 +19,14 @@ class AllGalleriesPage {
         return cy.get('a[class="box-title"]').eq(0)
     }
 
+    get singleGallery() {
+        return cy.get('.cell');
+    }
+
+    search(searchTerm) {
+        this.searchBox.type(searchTerm);
+        this.filterBtn.click();
+    }
 
     allgalleries(search){
         this.clickGalleryUrl.click();

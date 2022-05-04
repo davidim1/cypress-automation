@@ -1,5 +1,5 @@
 class RegisterPage {
-    get firtNameInput() {
+    get firstNameInput() {
         return cy.get('#first-name');
     }
 
@@ -27,8 +27,18 @@ class RegisterPage {
         return cy.get('button[type="submit"]')
     }
 
+    get registerHeading() {
+        return cy.get('h1');
+    }
+
+    get errorMsg() {
+        return cy.get('p[class="alert alert-danger"]')
+    }
+
+
+
     register(firstName, lastName, email, password) {
-        this.firtNameInput.type(firstName);
+        this.firstNameInput.type(firstName);
         this.lastNameInput.type(lastName);
         this.emailInput.type(email);
         this.passwordInput.type(password);
