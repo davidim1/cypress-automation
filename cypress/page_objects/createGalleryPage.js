@@ -8,7 +8,7 @@ class CreateGalleryPage {
     }
 
     get imagesField() {
-        return cy.get('input[placeholder="image url"]')
+        return cy.get('input[class="form-control"]').eq(2)
     }
 
     get addImageBtn() {
@@ -16,7 +16,7 @@ class CreateGalleryPage {
     }
 
     get imagesField2() {
-        return cy.get('input[placeholder="image url"]').eq(1)
+        return cy.get('input[class="form-control"]').eq(3)
     }
 
     get arrowUpBtn() {
@@ -27,22 +27,31 @@ class CreateGalleryPage {
         return cy.get('i[class="fas fa-chevron-circle-down"]')
     }
 
+    get deleteImageUrl() {
+        return cy.get('i[class="fas fa-trash"]')
+    }
+
     get submitBtn() {
-        return cy.get('button[type="submit"]').contains('Submit')
+        return cy.get('button[class="btn btn-custom"]').eq(0)
     }
 
     get cancelBtn() {
-        return cy.get('button[type="submit"]').contains('Cancel')
+        return cy.get('button[class="btn btn-custom"]').eq(1)
     }
+
+    get logoutBtn() {
+        return cy.get('a[class="nav-link nav-buttons"]')
+    }
+
 
     creategallery(title, description, image) {
         this.titleField.type(title);
         this.descriptionsField.type(description);
         this.imagesField.type(image);
-        this.addImageBtn.click({ multiple: true });
-        this.imagesField2.type(image);
-        this.arrowUpBtn.click({ multiple: true });
-        this.arrowDownBtn.click({ multiple: true });        
+        // this.addImageBtn.click({ multiple: true });
+        // this.imagesField2.type(image);
+        // this.arrowUpBtn.click({ multiple: true });
+        // this.arrowDownBtn.click({ multiple: true });        
     }
 }
 export const createGalleryPage = new CreateGalleryPage

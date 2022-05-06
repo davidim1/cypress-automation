@@ -15,7 +15,7 @@ class AllGalleriesPage {
         return cy.get('button[class="btn btn-custom"]')
     }
 
-    get clickGalleryUrl() {
+    get enterSingleGallery() {
         return cy.get('a[class="box-title"]').eq(0)
     }
 
@@ -28,8 +28,9 @@ class AllGalleriesPage {
         this.filterBtn.click();
     }
 
+
     allgalleries(search){
-        this.clickGalleryUrl.click();
+        this.enterSingleGallery.click();
         cy.visit('/');
         this.loadMoreBtn.click();
         this.searchBox.type(search);

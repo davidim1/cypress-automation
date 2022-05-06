@@ -1,6 +1,7 @@
 import { createGalleryPage } from "../page_objects/createGalleryPage";
 import { faker } from '@faker-js/faker';
-import {loginPage} from '../page_objects/loginPage'
+import {loginPage} from '../page_objects/loginPage';
+import{allGalleriesPage} from '../page_objects/allGalleriesPage'
 
 
 describe ('Create gallery', () => {
@@ -11,8 +12,8 @@ describe ('Create gallery', () => {
     }
     
     beforeEach('visit login page and login', () => {  
-        cy.visit('/login')
-        cy.url().should('include', '/login')
+        cy.visit('/login');
+        cy.url().should('include', '/login');
         loginPage.emailInput.type('gugagaga@gmail.com');
         loginPage.passwordInput.type('gugagaga1');
         loginPage.submitBtn.click();
@@ -25,7 +26,13 @@ describe ('Create gallery', () => {
             createGalleryData.description,
             createGalleryData.images
         );
-        cy.get('button[type="submit"]').contains('Submit').click
+        createGalleryPage.descriptionsField.should('be.visible');
+        createGalleryPage.imagesField2.should('not.exist');
+        createGalleryPage.deleteImageUrl.should('not.exist');
+        createGalleryPage.submitBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
     })
 
     it ('Canceling creation of new gallery', () => {
@@ -34,6 +41,79 @@ describe ('Create gallery', () => {
             createGalleryData.description,
             createGalleryData.images
         );
-        cy.get('button[type="submit"]').contains('Cancel').click()
+        createGalleryPage.imagesField2.should('not.exist');
+        createGalleryPage.deleteImageUrl.should('not.exist');
+        createGalleryPage.cancelBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
     })
+
+    it ('Adding more images and creating gallery', () => {
+        createGalleryPage.creategallery(
+            createGalleryData.title,
+            createGalleryData.description,
+            createGalleryData.images
+        );
+        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.imagesField2.type(createGalleryData.images);
+        createGalleryPage.deleteImageUrl.should('be.visible')
+        createGalleryPage.submitBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
+    })
+
+    it ('Moving url fields up and down and creating gallery', () => {
+        createGalleryPage.creategallery(
+            createGalleryData.title,
+            createGalleryData.description,
+            createGalleryData.images
+        );
+        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.imagesField2.should('be.visible')
+        createGalleryPage.imagesField2.type(createGalleryData.images);
+        createGalleryPage.arrowUpBtn.click({ multiple: true })
+            .should('be.visible');
+        createGalleryPage.arrowDownBtn.click({ multiple: true })
+            .should('be.visible');
+        createGalleryPage.submitBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
+    })
+
+    it ('Deleting first image and creating gallery', () => {
+        createGalleryPage.creategallery(
+            createGalleryData.title,
+            createGalleryData.description,
+            createGalleryData.images
+        );
+        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.imagesField2.type(createGalleryData.images);
+        createGalleryPage.deleteImageUrl.eq(0).click()
+        createGalleryPage.submitBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
+        
+    })
+
+    it ('Deleting last image and creating gallery', () => {
+        createGalleryPage.creategallery(
+            createGalleryData.title,
+            createGalleryData.description,
+            createGalleryData.images
+        );
+        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.imagesField2.type(createGalleryData.images);
+        createGalleryPage.deleteImageUrl.last().click()
+        createGalleryPage.submitBtn.click();
+        cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
+        
+    })
+
+
 })

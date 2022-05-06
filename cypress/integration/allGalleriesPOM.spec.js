@@ -12,19 +12,19 @@ describe ('All galleries', () => {
         cy.url().should('not.include', '/register');
     })
 
-    it ('validate page',() => {
+    xit ('validate page',() => {
         allGalleriesPage.allGalleriesHeading
            .should('be.visible')
            .and('have.text', 'All Galleries')
     })  
 
-    it ('all galleries displaying correctly', () => {
+    xit ('all galleries displaying correctly', () => {
         allGalleriesPage.singleGallery
            .should('be.visible')
            .and('have.length', 10)
     })
 
-    it ('10 more galleries loading', () => {
+    xit ('10 more galleries loading', () => {
         allGalleriesPage.singleGallery.should('have.length', 10);
         allGalleriesPage.loadMoreBtn.click();
         allGalleriesPage.singleGallery.should('have.length', 20);
@@ -34,7 +34,7 @@ describe ('All galleries', () => {
         allGalleriesPage.singleGallery.should('have.length', 40);
     })
 
-    it ('redirect to single gallery page', () => {
+    xit ('redirect to single gallery page', () => {
         allGalleriesPage.singleGallery
            .first()
            .find('a')
@@ -43,7 +43,7 @@ describe ('All galleries', () => {
         cy.url().should('include','/galleries')
     })
 
-    it ('redirect to author\'s gallery page', () => {
+    xit ('redirect to author\'s gallery page', () => {
         allGalleriesPage.singleGallery
            .first()
            .find('a')
@@ -53,15 +53,13 @@ describe ('All galleries', () => {
     })
 
     it ('search returning correct results', () => {
-        let searchTerm = 'Product Security Architect'
+        
 
         allGalleriesPage.singleGallery.should('have.length', 10);
         allGalleriesPage.search('Product Security Architect');
         allGalleriesPage.singleGallery.should('have.length', 1);
-        allGalleriesPage.singleGallery
-           .find('a')
-           .first()
-           .should('include', searchTerm)
+        allGalleriesPage.enterSingleGallery.click()
+        cy.url().should('include','/987')
     })
     
     xit ('All galleries search function', () => {
