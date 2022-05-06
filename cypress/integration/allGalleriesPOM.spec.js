@@ -52,7 +52,7 @@ describe ('All galleries', () => {
         cy.url().should('include','/authors')
     })
 
-    it ('search returning correct results', () => {
+    it.only ('search returning correct results', () => {
         
 
         allGalleriesPage.singleGallery.should('have.length', 10);

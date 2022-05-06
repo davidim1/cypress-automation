@@ -1,10 +1,10 @@
 import { createGalleryPage } from "../page_objects/createGalleryPage";
 import { faker } from '@faker-js/faker';
-import {loginPage} from '../page_objects/loginPage';
 import{allGalleriesPage} from '../page_objects/allGalleriesPage'
 
 
 describe ('Create gallery', () => {
+    let galleryId;
     let createGalleryData= {
         title: faker.random.word(),
         description: faker.random.word(),
@@ -12,26 +12,68 @@ describe ('Create gallery', () => {
     }
     
     beforeEach('visit login page and login', () => {  
-        cy.visit('/login');
-        cy.url().should('include', '/login');
-        loginPage.emailInput.type('gugagaga@gmail.com');
-        loginPage.passwordInput.type('gugagaga1');
-        loginPage.submitBtn.click();
-        cy.get('a[href="/create"]').click();
+        cy.loginViaBackend();
+        cy.visit('/create')
+        // })
+        // cy.visit('/login');
+        // cy.url().should('include', '/login');
+        // loginPage.emailInput.type('gugagaga@gmail.com');
+        // loginPage.passwordInput.type('gugagaga1');
+        // loginPage.submitBtn.click();
+        // cy.get('a[href="/create"]').click();
     })
     
     it ('Creating a new gallery', () => {
+        cy.intercept({
+            method: 'POST',
+            url: 'https://gallery-api.vivifyideas.com/api/galleries'
+        }).as('createGallery');
+
         createGalleryPage.creategallery(
             createGalleryData.title,
             createGalleryData.description,
             createGalleryData.images
         );
+     
         createGalleryPage.descriptionsField.should('be.visible');
+        createGalleryPage.titleField.should('have.text', '');
         createGalleryPage.imagesField2.should('not.exist');
         createGalleryPage.deleteImageUrl.should('not.exist');
         createGalleryPage.submitBtn.click();
+
+        cy.wait('@createGallery').then(interception => {
+            galleryId = interception.response.body.id;
+
+            cy.visit(`/galleries/${galleryId}`)
+        })
+
         cy.url().should('include','/');
-        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.logoutBtn.should('be.visible');
+    })
+
+    it ('Create invalid gallery', () => {
+        cy.intercept({
+            method: 'POST',
+            url: 'https://gallery-api.vivifyideas.com/api/galleries'
+        }).as('createInvalidDataGallery');
+
+        createGalleryPage.createEmptyGallery(
+            createGalleryData.title,
+            createGalleryData.description
+        );
+        createGalleryPage.imagesField.type('https://cdn.britannica.com/55/2155-050-604F5A4A/lion')
+     
+        createGalleryPage.descriptionsField.should('be.visible');
+        createGalleryPage.titleField.should('have.text', '');
+        createGalleryPage.imagesField2.should('not.exist');
+        createGalleryPage.deleteImageUrl.should('not.exist');
+        createGalleryPage.submitBtn.click();
+
+        cy.wait('@createInvalidDataGallery').then(interception => {
+            expect(interception.response.statusCode).eq(422)           
+        })
+
+        cy.url().should('include','/');
         createGalleryPage.logoutBtn.should('be.visible');
     })
 

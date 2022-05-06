@@ -53,5 +53,11 @@ class CreateGalleryPage {
         // this.arrowUpBtn.click({ multiple: true });
         // this.arrowDownBtn.click({ multiple: true });        
     }
+
+    createEmptyGallery(title, description) {
+        this.titleField.type(title)
+        this.descriptionsField.type(description);
+        
+    }
 }
 export const createGalleryPage = new CreateGalleryPage
