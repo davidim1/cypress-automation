@@ -12,7 +12,7 @@ class CreateGalleryPage {
     }
 
     get addImageBtn() {
-        return cy.get('button[type="button"]')
+        return cy.get('button[type="button"]').eq(2)
     }
 
     get imagesField2() {
@@ -41,6 +41,10 @@ class CreateGalleryPage {
 
     get logoutBtn() {
         return cy.get('a[class="nav-link nav-buttons"]')
+    }
+
+    get singleInput() {
+        return cy.get('input')
     }
 
 

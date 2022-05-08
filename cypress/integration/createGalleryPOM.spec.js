@@ -78,15 +78,13 @@ describe ('Create gallery', () => {
     })
 
     it ('Canceling creation of new gallery', () => {
-        createGalleryPage.creategallery(
-            createGalleryData.title,
-            createGalleryData.description,
-            createGalleryData.images
-        );
+        createGalleryPage.titleField.type('Proba');
+        createGalleryPage.imagesField.type('https://picsum.photos/200/300.jpg');
         createGalleryPage.imagesField2.should('not.exist');
         createGalleryPage.deleteImageUrl.should('not.exist');
         createGalleryPage.cancelBtn.click();
         cy.url().should('include','/');
+        allGalleriesPage.singleGallery.should('not.have.text', 'Proba')
         allGalleriesPage.singleGallery.should('have.length', 10);
         createGalleryPage.logoutBtn.should('be.visible');
     })
@@ -97,7 +95,7 @@ describe ('Create gallery', () => {
             createGalleryData.description,
             createGalleryData.images
         );
-        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.addImageBtn.click();
         createGalleryPage.imagesField2.type(createGalleryData.images);
         createGalleryPage.deleteImageUrl.should('be.visible')
         createGalleryPage.submitBtn.click();
@@ -106,22 +104,33 @@ describe ('Create gallery', () => {
         createGalleryPage.logoutBtn.should('be.visible');
     })
 
-    it ('Moving url fields up and down and creating gallery', () => {
+    it ('Moving url fields up', () => {
         createGalleryPage.creategallery(
             createGalleryData.title,
             createGalleryData.description,
             createGalleryData.images
         );
-        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.addImageBtn.click();
         createGalleryPage.imagesField2.should('be.visible')
-        createGalleryPage.imagesField2.type(createGalleryData.images);
-        createGalleryPage.arrowUpBtn.click({ multiple: true })
+        createGalleryPage.imagesField2.type(createGalleryData.images + 'proba');
+        createGalleryPage.arrowUpBtn.eq(1).click()
             .should('be.visible');
-        createGalleryPage.arrowDownBtn.click({ multiple: true })
+        createGalleryPage.imagesField.should('have.value', 'https://picsum.photos/200/300.jpgproba')
+        createGalleryPage.logoutBtn.should('be.visible');
+    })
+
+    it ('Moving url fields down', () => {
+        createGalleryPage.creategallery(
+            createGalleryData.title,
+            createGalleryData.description,
+            createGalleryData.images
+        );
+        createGalleryPage.addImageBtn.click();
+        createGalleryPage.imagesField2.should('be.visible')
+        createGalleryPage.imagesField2.type(createGalleryData.images + 'proba');
+        createGalleryPage.arrowDownBtn.eq(0).click()
             .should('be.visible');
-        createGalleryPage.submitBtn.click();
-        cy.url().should('include','/');
-        allGalleriesPage.singleGallery.should('have.length', 10);
+        createGalleryPage.imagesField.should('have.value', 'https://picsum.photos/200/300.jpgproba')
         createGalleryPage.logoutBtn.should('be.visible');
     })
 
@@ -131,9 +140,10 @@ describe ('Create gallery', () => {
             createGalleryData.description,
             createGalleryData.images
         );
-        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.addImageBtn.click();
         createGalleryPage.imagesField2.type(createGalleryData.images);
-        createGalleryPage.deleteImageUrl.eq(0).click()
+        createGalleryPage.deleteImageUrl.eq(0).click();
+        createGalleryPage.singleInput.should('have.length', 3)
         createGalleryPage.submitBtn.click();
         cy.url().should('include','/');
         allGalleriesPage.singleGallery.should('have.length', 10);
@@ -147,9 +157,10 @@ describe ('Create gallery', () => {
             createGalleryData.description,
             createGalleryData.images
         );
-        createGalleryPage.addImageBtn.click({ multiple: true });
+        createGalleryPage.addImageBtn.click();
         createGalleryPage.imagesField2.type(createGalleryData.images);
-        createGalleryPage.deleteImageUrl.last().click()
+        createGalleryPage.deleteImageUrl.last().click();
+        createGalleryPage.singleInput.should('have.length', 3)
         createGalleryPage.submitBtn.click();
         cy.url().should('include','/');
         allGalleriesPage.singleGallery.should('have.length', 10);
